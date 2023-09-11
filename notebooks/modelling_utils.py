@@ -181,45 +181,45 @@ def evaluate_classifier(y_true, y_pred, probas):
         raise CustomException(e, sys)
     
 
-def plot_feature_importances(model, data):
+def probability_distributions(predicted_probas, y_true, positive_label='1', negative_label='0'):
     '''
-    Plot feature importances of a given machine learning model.
+    Plot probability distributions for binary classification.
 
-    This function takes a trained machine learning model and the corresponding dataset used for training, and plots the
-    feature importances of the model's attributes. Feature importances are sorted in descending order for visualization.
+    This function generates a KDE (Kernel Density Estimation) plot to visualize the probability distributions
+    of predicted probabilities for positive and negative instances in a binary classification problem.
 
-    Args:
-        model (object): The trained machine learning model with a feature_importances_ attribute.
-        data (DataFrame): The dataset containing the features used for training the model.
+    Parameters:
+        predicted_probas (numpy.ndarray): Predicted probabilities from a binary classification model.
+        y_true (numpy.ndarray): True class labels (0 for negative, 1 for positive).
+        positive_label (str, optional): Label for the positive class. Default is '1'.
+        negative_label (str, optional): Label for the negative class. Default is '0'.
 
     Returns:
-        None (displays feature importances).
+        None
+
+    Example:
+        probability_distributions(predicted_probs, true_labels, positive_label='Default', negative_label='Non-Default')
 
     Raises:
-        CustomException: If an error occurs while plotting feature importances.
-
+        CustomException: If an exception occurs during execution, it is raised with the error message.
     '''
-    
+
     try:
-        # Get feature importances
-        importances = model.feature_importances_
-        feature_names = data.columns 
+        # Obtaining predicted probabilities of being positive for positive and negative instances.
+        probas_positive = predicted_probas[y_true == 1]
+        probas_negative = predicted_probas[y_true == 0]
 
+        # Plotting kde plot with shaded curves
+        sns.kdeplot(probas_positive, label=positive_label, shade=True)
+        sns.kdeplot(probas_negative, label=negative_label, shade=True)
 
-        # Sort feature importances in descending order
-        indices = np.argsort(importances)[::-1]
-        sorted_feature_names = [feature_names[i] for i in indices]
-        sorted_importances = importances[indices]
-
-        # Plot feature importances
-        color_sequence = ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd',
-                        '#8c564b', '#e377c2', '#7f7f7f', '#bcbd22']
-
-        plt.figure(figsize=(12, 3))
-        plt.title('Feature Importances')
-        plt.bar(range(len(importances)), sorted_importances, tick_label=sorted_feature_names, color=color_sequence)
-        plt.xticks(rotation=90)
+        # Customizing the plot.
+        plt.title(f'Probability Distribution by {positive_label}')
+        plt.xticks(np.arange(0, 1, 0.1))
+        plt.xlabel('Probabilities')
+        plt.ylabel('Density')
+        plt.legend()
         plt.show()
-
+    
     except Exception as e:
         raise CustomException(e, sys)
