@@ -16,6 +16,7 @@ import matplotlib.pyplot as plt
 from sklearn.model_selection import cross_val_score, StratifiedKFold
 from sklearn.metrics import roc_auc_score, classification_report, confusion_matrix, roc_curve, precision_recall_curve
 import time
+import math
 
 # Debugging.
 from src.exception import CustomException
@@ -314,15 +315,15 @@ def target_percentages_by_range(y_true, predicted_probas, positive_label='1', ne
         y_true_scores.reset_index(drop=True, inplace=True)
 
         # Constructing a dataframe with percentages of default and non-default within each range.
-        range_percentages = y_true_scores.groupby('Range')['Default'].value_counts(normalize=True).unstack()
-        range_percentages_df = range_percentages.rename(columns={0: 'Non-Default', 1: 'Default'})
+        range_percentages = y_true_scores.groupby('Range')[positive_label].value_counts(normalize=True).unstack()
+        range_percentages_df = range_percentages.rename(columns={0: negative_label, 1: positive_label})
         range_percentages.reset_index(inplace=True)
-        range_percentages.rename(columns={0: 'Non-Default', 1: 'Default'}, inplace=True)
+        range_percentages.rename(columns={0: negative_label, 1: positive_label}, inplace=True)
         
         # Creating a stacked bar plot
         plt.figure(figsize=(12, 6))
-        sns.barplot(x='Range', y='Default', data=range_percentages, color='green', label='Default')
-        sns.barplot(x='Range', y='Non-Default', data=range_percentages, color='red', bottom=range_percentages['Default'], label='Non-Default')
+        sns.barplot(x='Range', y=positive_label, data=range_percentages, color='green', label='Default')
+        sns.barplot(x='Range', y=negative_label, data=range_percentages, color='red', bottom=range_percentages[positive_label], label=negative_label)
 
         # Customizing the plot.
         plt.title(f'{positive_label} and {negative_label} Percentages by Range')
@@ -333,9 +334,9 @@ def target_percentages_by_range(y_true, predicted_probas, positive_label='1', ne
 
         # Adding percentages inside the bars.
         for p in range_percentages.index:
-            total_height = range_percentages['Default'][p] + range_percentages['Non-Default'][p]
-            plt.text(p, range_percentages['Default'][p] / 2, f"{range_percentages['Default'][p]*100:.2f}%", ha='center', color='white', fontsize=10)
-            plt.text(p, range_percentages['Default'][p] + range_percentages['Non-Default'][p] / 2, f"{range_percentages['Non-Default'][p]*100:.2f}%", ha='center', color='white', fontsize=10)
+            total_height = range_percentages[positive_label][p] + range_percentages[negative_label][p]
+            plt.text(p, range_percentages[positive_label][p] / 2, f"{range_percentages[positive_label][p]*100:.2f}%", ha='center', color='white', fontsize=10)
+            plt.text(p, range_percentages[positive_label][p] + range_percentages[negative_label][p] / 2, f"{range_percentages[negative_label][p]*100:.2f}%", ha='center', color='white', fontsize=10)
         
         plt.tight_layout()
         plt.show()
