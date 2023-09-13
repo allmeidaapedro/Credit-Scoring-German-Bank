@@ -107,8 +107,8 @@ def evaluate_models_cv(models, X_train, y_train):
 
         x = np.arange(len(eval_df['Model']))
 
-        val_bars = plt.bar(x - width/2, eval_df['Average Val Score'], width, label='Average Validation Score', color='skyblue')
-        train_bars = plt.bar(x + width/2, eval_df['Train Score'], width, label='Train Score', color='orange')
+        val_bars = plt.bar(x - width/2, eval_df['Average Val Score'], width, label='Average Validation Score', palette='Set1')
+        train_bars = plt.bar(x + width/2, eval_df['Train Score'], width, label='Train Score', palette='Set1')
 
         plt.xlabel('Model')
         plt.ylabel('ROC-AUC Score')
