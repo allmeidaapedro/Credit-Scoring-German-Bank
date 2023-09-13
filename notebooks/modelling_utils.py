@@ -181,15 +181,15 @@ def evaluate_classifier(y_true, y_pred, probas):
         raise CustomException(e, sys)
     
 
-def probability_distributions(predicted_probas, y_true, positive_label='1', negative_label='0'):
+def target_probability_distributions(predicted_probas, y_true, positive_label='1', negative_label='0'):
     '''
-    Plot probability distributions for binary classification.
+    Plot target probability distributions for binary classification.
 
     This function generates a KDE (Kernel Density Estimation) plot to visualize the probability distributions
     of predicted probabilities for positive and negative instances in a binary classification problem.
 
     Parameters:
-        predicted_probas (numpy.ndarray): Predicted probabilities from a binary classification model.
+        predicted_probas (numpy.ndarray): Predicted positive probabilities from a binary classification model.
         y_true (numpy.ndarray): True class labels (0 for negative, 1 for positive).
         positive_label (str, optional): Label for the positive class. Default is '1'.
         negative_label (str, optional): Label for the negative class. Default is '0'.
@@ -198,7 +198,7 @@ def probability_distributions(predicted_probas, y_true, positive_label='1', nega
         None
 
     Example:
-        probability_distributions(predicted_probs, true_labels, positive_label='Default', negative_label='Non-Default')
+        target_probability_distributions(predicted_probs, true_labels, positive_label='Default', negative_label='Non-Default')
 
     Raises:
         CustomException: If an exception occurs during execution, it is raised with the error message.
@@ -221,5 +221,53 @@ def probability_distributions(predicted_probas, y_true, positive_label='1', nega
         plt.legend()
         plt.show()
     
+    except Exception as e:
+        raise CustomException(e, sys)
+    
+
+def target_distributions_by_range(y_true, predicted_probas, positive_label='1', negative_label='0'):
+    '''
+    Plot and analyze the distribution of target classes within score ranges.
+
+    Args:
+        y_true (array-like): True target labels.
+        predicted_probas (array-like): Predicted probabilities of the positive class.
+        positive_label (str, optional): Label for the positive class (default is '1').
+        negative_label (str, optional): Label for the negative class (default is '0').
+
+    Returns:
+        pandas.DataFrame: DataFrame with columns 'positive_label', 'Scores', and 'Range' showing target flags, scores, and score ranges.
+
+    Raises:
+        CustomException: If an error occurs during execution.
+    '''
+
+    try:
+        # Constructing a dataframe with target flag, scores and range columns.
+        bins = np.arange(0, 1.1, 0.1)
+        bins_labels = [f'{i/10:.1f} to {i/10+0.1:.1f}' for i in range(10)]
+
+        y_true_scores = pd.DataFrame({positive_label: y_true})
+        y_true_scores['Scores'] = predicted_probas
+        y_true_scores['Range'] = pd.cut(y_true_scores['Scores'], bins=bins, labels=bins_labels)
+        y_true_scores.reset_index(drop=True, inplace=True)
+    
+        # Plotting the target classes distributions by range.
+        plt.figure(figsize=(15, 4))
+
+        ax = sns.countplot(data=y_true_scores, x='Range', hue=positive_label)
+
+        plt.title(f'{positive_label} and {negative_label} Distributions by Range')
+        plt.xlabel('Range')
+        plt.ylabel('Count')
+
+        for p in ax.patches:
+            ax.annotate(f'{round(p.get_height())}', (p.get_x() + p.get_width() / 2., p.get_height() + 0.3), ha='center', va='baseline')
+
+        plt.tight_layout()
+        plt.show()
+
+        return y_true_scores
+
     except Exception as e:
         raise CustomException(e, sys)
