@@ -210,15 +210,15 @@ def target_probability_distributions(predicted_probas, y_true, positive_label='1
         probas_negative = predicted_probas[y_true == 0]
 
         # Plotting kde plot with shaded curves
-        sns.kdeplot(probas_positive, label=positive_label, shade=True)
-        sns.kdeplot(probas_negative, label=negative_label, shade=True)
+        sns.kdeplot(probas_positive, label=positive_label, color='green', shade=True)
+        sns.kdeplot(probas_negative, label=negative_label, color='red', shade=True)
 
         # Customizing the plot.
         plt.title(f'Probability Distribution by {positive_label}')
         plt.xticks(np.arange(0, 1, 0.1))
         plt.xlabel('Probabilities')
         plt.ylabel('Density')
-        plt.legend()
+        plt.legend(loc='upper right', bbox_to_anchor=(1, 1))
         plt.show()
     
     except Exception as e:
@@ -255,19 +255,92 @@ def target_distributions_by_range(y_true, predicted_probas, positive_label='1', 
         # Plotting the target classes distributions by range.
         plt.figure(figsize=(15, 4))
 
-        ax = sns.countplot(data=y_true_scores, x='Range', hue=positive_label)
+        # Plotting countplot with hue=positive_label.
+        ax = sns.countplot(data=y_true_scores, x='Range', hue=positive_label, palette=['green', 'red'])
 
+        # Customizing the plot.
         plt.title(f'{positive_label} and {negative_label} Distributions by Range')
         plt.xlabel('Range')
         plt.ylabel('Count')
+        plt.legend(loc='upper right', bbox_to_anchor=(1, 1))
 
+        # Adding counts at the top of the bars.
         for p in ax.patches:
-            ax.annotate(f'{round(p.get_height())}', (p.get_x() + p.get_width() / 2., p.get_height() + 0.3), ha='center', va='baseline')
+            height = p.get_height()
+            if not math.isnan(height):
+                ax.annotate(f'{round(height)}', (p.get_x() + p.get_width() / 2., height + 0.3), ha='center', va='baseline')
 
         plt.tight_layout()
         plt.show()
 
         return y_true_scores
 
+    except Exception as e:
+        raise CustomException(e, sys)
+
+
+def target_percentages_by_range(y_true, predicted_probas, positive_label='1', negative_label='0'):
+    '''
+    Calculate target percentages by score ranges and visualize them with a stacked bar plot.
+
+    This function takes true labels and predicted probabilities, calculates the target percentages
+    within predefined score ranges, and displays them in a stacked bar plot.
+
+    :param y_true: True labels or target values.
+    :type y_true: array-like
+
+    :param predicted_probas: Predicted probabilities or scores.
+    :type predicted_probas: array-like
+
+    :param positive_label: Label for the positive class (default is '1').
+    :type positive_label: str
+
+    :param negative_label: Label for the negative class (default is '0').
+    :type negative_label: str
+
+    :return: DataFrame containing percentages of default and non-default within each range.
+    :rtype: pandas.DataFrame
+
+    :raises CustomException: If an exception occurs during execution.
+    '''
+    try:
+        # Constructing a dataframe with target flag, scores and range columns.
+        bins = np.arange(0, 1.1, 0.1)
+        bins_labels = [f'{i/10:.1f} to {i/10+0.1:.1f}' for i in range(10)]
+
+        y_true_scores = pd.DataFrame({positive_label: y_true})
+        y_true_scores['Scores'] = predicted_probas
+        y_true_scores['Range'] = pd.cut(y_true_scores['Scores'], bins=bins, labels=bins_labels)
+        y_true_scores.reset_index(drop=True, inplace=True)
+
+        # Constructing a dataframe with percentages of default and non-default within each range.
+        range_percentages = y_true_scores.groupby('Range')['Default'].value_counts(normalize=True).unstack()
+        range_percentages_df = range_percentages.rename(columns={0: 'Non-Default', 1: 'Default'})
+        range_percentages.reset_index(inplace=True)
+        range_percentages.rename(columns={0: 'Non-Default', 1: 'Default'}, inplace=True)
+        
+        # Creating a stacked bar plot
+        plt.figure(figsize=(12, 6))
+        sns.barplot(x='Range', y='Default', data=range_percentages, color='green', label='Default')
+        sns.barplot(x='Range', y='Non-Default', data=range_percentages, color='red', bottom=range_percentages['Default'], label='Non-Default')
+
+        # Customizing the plot.
+        plt.title(f'{positive_label} and {negative_label} Percentages by Range')
+        plt.xlabel('Range')
+        plt.ylabel('Percentage')
+        plt.legend(loc='upper right', bbox_to_anchor=(1, 1))
+        plt.xticks(rotation=45)
+
+        # Adding percentages inside the bars.
+        for p in range_percentages.index:
+            total_height = range_percentages['Default'][p] + range_percentages['Non-Default'][p]
+            plt.text(p, range_percentages['Default'][p] / 2, f"{range_percentages['Default'][p]*100:.2f}%", ha='center', color='white', fontsize=10)
+            plt.text(p, range_percentages['Default'][p] + range_percentages['Non-Default'][p] / 2, f"{range_percentages['Non-Default'][p]*100:.2f}%", ha='center', color='white', fontsize=10)
+        
+        plt.tight_layout()
+        plt.show()
+
+        return range_percentages_df
+    
     except Exception as e:
         raise CustomException(e, sys)
