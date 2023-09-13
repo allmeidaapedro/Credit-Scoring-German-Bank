@@ -55,6 +55,7 @@ def sns_plots(data, features, histplot=True, countplot=False,
     '''
     
     try:
+        # Getting num_features and num_rows and iterating over the sublot dimensions.
         num_features = len(features)
         num_rows = num_features // 3 + (num_features % 3 > 0)  
 
@@ -67,19 +68,33 @@ def sns_plots(data, features, histplot=True, countplot=False,
             ax = axes[row, col] if num_rows > 1 else axes[col] 
             
             if countplot:
+                # Plotting countplot and adding the counts at the top of each bar.
                 sns.countplot(data=data, x=feature, hue=hue, ax=ax)
+                for container in ax.containers:
+                    ax.bar_label(container)
+
             elif barplot:
-                sns.barplot(data=data, x=feature, y=barplot_y, hue=hue, ax=ax)
+                # Plotting barplot and adding the averages at the top of each bar.
+                ax = sns.barplot(data=data, x=feature, y=barplot_y, hue=hue, ax=ax, ci=None)
+                for container in ax.containers:
+                    ax.bar_label(container)
+
             elif boxplot:
+                # Plotting multivariate boxplot.
                 sns.boxplot(data=data, x=boxplot_x, y=feature, showfliers=outliers, ax=ax)
+
             elif outliers:
+                # Plotting univariate boxplot.
                 sns.boxplot(data=data, x=feature, ax=ax)
+
             else:
+                # Plotting histplot.
                 sns.histplot(data=data, x=feature, hue=hue, kde=kde, ax=ax)
 
             ax.set_title(feature)  
             ax.set_xlabel('')  
         
+        # Removing unused axes.
         if num_features < len(axes.flat):
             for j in range(num_features, len(axes.flat)):
                 fig.delaxes(axes.flat[j])
