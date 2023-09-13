@@ -114,7 +114,6 @@ class DataIngestion:
             
             train.to_csv(self.ingestion_config.train_data_path, index=False, header=True)
             test.to_csv(self.ingestion_config.test_data_path, index=False, header=True)
-            logging.info('Finished data ingestion.')
 
             return self.ingestion_config.train_data_path, self.ingestion_config.test_data_path
         
