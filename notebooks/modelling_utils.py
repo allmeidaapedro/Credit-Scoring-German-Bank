@@ -284,7 +284,7 @@ def target_percentages_by_range(y_true, predicted_probas, positive_label='1', ne
     '''
     Calculate target percentages by score ranges and visualize them with a stacked bar plot.
 
-    This function takes true labels and predicted probabilities, calculates the target percentages
+    This function takes true labels and predicted probabilities of the positive class, calculates the target percentages
     within predefined score ranges, and displays them in a stacked bar plot.
 
     :param y_true: True labels or target values.
@@ -322,8 +322,8 @@ def target_percentages_by_range(y_true, predicted_probas, positive_label='1', ne
         
         # Creating a stacked bar plot
         plt.figure(figsize=(12, 6))
-        sns.barplot(x='Range', y=positive_label, data=range_percentages, color='green', label='Default')
-        sns.barplot(x='Range', y=negative_label, data=range_percentages, color='red', bottom=range_percentages[positive_label], label=negative_label)
+        sns.barplot(x='Range', y=positive_label, data=range_percentages, color='red', label='Default')
+        sns.barplot(x='Range', y=negative_label, data=range_percentages, color='green', bottom=range_percentages[positive_label], label=negative_label)
 
         # Customizing the plot.
         plt.title(f'{positive_label} and {negative_label} Percentages by Range')
