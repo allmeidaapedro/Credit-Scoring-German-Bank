@@ -54,21 +54,21 @@ Each step is explained in detail inside the notebooks, where I provide the ratio
 2. Customers who take higher credit amounts from the bank tend to present higher risk. This makes total sense. The higher the credit amount taken, the harder it is to pay it.
 3. Customers whose credit services have a long duration present higher risk. The more time a customer spends using a credit service without paying it, the higher the risk of default.
 
-<img src="images/numeric_distributions_by_default.png>
+<img src="images/numeric_distributions_by_default.png">
 
 4. Credit amount and Duration are strongly positively correlated. Credit services with longer durations generally are associated with higher credit amounts and vice-versa.
 
-<img src="images/duration_vs_credit_amount.png>
+<img src="images/duration_vs_credit_amount.png">
 
 5. Customers with little saving and checking accounts tend to present higher credit risk. Particularly, almost 50% of the customers who have little checking accounts are defaulters. Moreover, when a customer takes credit from the bank for vacation/others and education purposes, it must be alert. Specifically, almost 50% of the customers who took credit for education defaulted on the loan.
 
-<img src="images/saving_checking_accounts_distributions_by_default.png>
+<img src="images/saving_checking_accounts_distributions_by_default.png">
 
 6. On average, customers who have highly skilled jobs, free housing, and vacation/other purposes tend to borrow larger credit amounts from the bank and, consequently, for longer durations, presenting higher levels of risk. 
 
-<img src="images/purpose_default_credit_amount.png>
+<img src="images/purpose_default_credit_amount.png">
 
-<img src="images/job_housing_credit_amounts.png>
+<img src="images/job_housing_credit_amounts.png">
 
 # 6. Modelling
 
@@ -77,7 +77,7 @@ Each step is explained in detail inside the notebooks, where I provide the ratio
 3. In order to select the best model for hyperparameter tuning and final evaluation, I trained and evaluated each of the models using stratified k-fold cross-validation, which provides a more reliable performance estimate. Then, I balanced a higher average validation ROC-AUC score with the bias-variance trade-off.
 4. Although SVM had the best average validation score, I chose Random Forest for the next steps because there was more room for performance improvement with it. It was overfitting (low bias and high variance), and I could apply some regularization to enhance its generalization ability. Moreover, XGBoost performed slightly better than Random Forest, however I chose the latter because it is an ensemble method that uses a bagging technique, which may be better for preventing overfit. Additionally, it is faster, more efficient, and offers relatively simplicity and interpretability.
 
-<img src="images/kfold_crossval_onehot.png>
+<img src="images/kfold_crossval_onehot.png">
 
 5. I tuned Random Forest model with Bayesian Search because it uses probabilistic models to intelligently explore the hyperparameter space, balancing exploration and exploitation. An important point here was to define a class_weight hyperparameter, such that the estimator was able to better learn the patterns in minority target class (defaulters). As expected, some regularization was applied. The training error and bias have increased (the training ROC-AUC score dropped from 1.0 to 0.875818), while the variance has decreased. Consequently, it was possible to improve the average validation roc-auc score from 0.734189 to 0.763281, good.
 6. I evaluated the results. Since the project's goal was to build a model capable of effectively distinguishing between customers who will default on loans and those who will not, aiming for a high ROC-AUC score, the objective was achieved. The ROC-AUC score on the test set was equal to 0.78, and other metrics for defaulters, such as recall and precision, also showed good values.
