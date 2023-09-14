@@ -60,11 +60,11 @@ Each step is explained in detail inside the notebooks, where I provide the ratio
 
 <img src="images/duration_vs_credit_amount.png">
 
-5. Customers with little saving and checking accounts tend to present higher credit risk. Particularly, almost 50% of the customers who have little checking accounts are defaulters. Moreover, when a customer takes credit from the bank for vacation/others and education purposes, it must be alert. Specifically, almost 50% of the customers who took credit for education defaulted on the loan.
+5. Customers with little saving and checking accounts tend to present higher credit risk. Particularly, almost 50% of the customers who have little checking accounts are defaulters. 
 
 <img src="images/saving_checking_accounts_distributions_by_default.png">
 
-6. On average, customers who have highly skilled jobs, free housing, and vacation/other purposes tend to borrow larger credit amounts from the bank and, consequently, for longer durations, presenting higher levels of risk. 
+6. When a customer takes credit from the bank for vacation/others and education purposes, it must be alert. Specifically, almost 50% of the customers who took credit for education defaulted on the loan. Moreover, on average, customers who have highly skilled jobs, free housing, and vacation/other purposes tend to borrow larger credit amounts from the bank and, consequently, for longer durations, presenting higher levels of risk. 
 
 <img src="images/purpose_default_credit_amount.png">
 
