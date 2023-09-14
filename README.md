@@ -1,4 +1,4 @@
-# German Bank Credit Scoring
+# German Bank's Credit Scoring
 
 <img src="images/german_bank.jpg" width="800" height="450">
 
