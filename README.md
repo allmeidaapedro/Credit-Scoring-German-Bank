@@ -56,6 +56,10 @@ Each step is explained in detail inside the notebooks, where I provide the ratio
 
 <img src="images/numeric_distributions_by_default.png">
 
+Examining the WOE and Default Probability, it becomes evident that as the duration (in months) increases, the default rate increases. Look how durations of 24-36 months, 36-48 months and 48-60 months present a higher default probability when compared to the total and the other categories:
+
+<img src="images/iv_duration.jpeg">
+
 4. Credit amount and Duration are strongly positively correlated. Credit services with longer durations generally are associated with higher credit amounts and vice-versa.
 
 <img src="images/duration_vs_credit_amount.png">
