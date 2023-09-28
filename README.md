@@ -52,9 +52,13 @@ The following pipeline was used, based on CRISP-DM framework:
 Each step is explained in detail inside the notebooks, where I provide the rationale for the decisions made
 
 # 5. Main business insights
-1. Young customers tend to present higher credit risk. This makes sense since younger people usually don't have financial stability.
-2. Customers who take higher credit amounts from the bank tend to present higher risk. This makes total sense. The higher the credit amount taken, the harder it is to pay it. 
-3. Customers whose credit services have a long duration present higher risk. The more time a customer spends using a credit service without paying it, the higher the risk of default. 
+1. Approximately 35% of the total credit was lent to defaulters, reinforcing the motivation for the analysis and credit scoring modeling to change the bank's credit policy in order to increase ROI.
+
+<img src="images/credit_defaut.jpeg">
+
+2. Young customers tend to present higher credit risk. This makes sense since younger people usually don't have financial stability.
+3. Customers who take higher credit amounts from the bank tend to present higher risk. This makes total sense. The higher the credit amount taken, the harder it is to pay it. 
+4. Customers whose credit services have a long duration present higher risk. The more time a customer spends using a credit service without paying it, the higher the risk of default. 
 
 <img src="images/numeric_distributions_by_default.png">
 
@@ -66,15 +70,15 @@ Examining the weight of evidence and the default probability, it becomes evident
 
 <img src="images/iv_credit.jpeg">
 
-4. Credit amount and Duration are strongly positively correlated. Credit services with longer durations generally are associated with higher credit amounts and vice-versa.
+5. Credit amount and Duration are strongly positively correlated. Credit services with longer durations generally are associated with higher credit amounts and vice-versa.
 
 <img src="images/duration_vs_credit_amount.png">
 
-5. Customers with little saving and checking accounts tend to present higher credit risk. Particularly, almost 50% of the customers who have little checking accounts are defaulters. 
+6. Customers with little saving and checking accounts tend to present higher credit risk. Particularly, almost 50% of the customers who have little checking accounts are defaulters. 
 
 <img src="images/saving_checking_accounts_distributions_by_default.png">
 
-6. When a customer takes credit from the bank for vacation/others and education purposes, it must be alert. Specifically, almost 50% of the customers who took credit for education defaulted on the loan. Moreover, on average, customers who have highly skilled jobs, free housing, and vacation/other purposes tend to borrow larger credit amounts from the bank and, consequently, for longer durations, presenting higher levels of risk. 
+7. When a customer takes credit from the bank for vacation/others and education purposes, it must be alert. Specifically, almost 50% of the customers who took credit for education defaulted on the loan. Moreover, on average, customers who have highly skilled jobs, free housing, and vacation/other purposes tend to borrow larger credit amounts from the bank and, consequently, for longer durations, presenting higher levels of risk. 
 
 <img src="images/purpose_default_credit_amount.png">
 
