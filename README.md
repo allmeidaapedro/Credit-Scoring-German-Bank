@@ -51,14 +51,18 @@ Each step is explained in detail inside the notebooks, where I provide the ratio
 
 # 5. Main business insights
 1. Young customers tend to present higher credit risk. This makes sense since younger people usually don't have financial stability.
-2. Customers who take higher credit amounts from the bank tend to present higher risk. This makes total sense. The higher the credit amount taken, the harder it is to pay it. Examining the weight of evidencie and the default probability, it becomes evident that as the borrowed credit amount increases, the default rate increases. Look how credit amounts of 7500-10000 and higher than 10000 present a higher default probability when compared to the total and the other categories.
-3. Customers whose credit services have a long duration present higher risk. The more time a customer spends using a credit service without paying it, the higher the risk of default. Examining the weight of evidence and the default probability, it becomes evident that as the duration (in months) increases, the default rate increases. Look how durations of 24-36 months, 36-48 months and 48-60 months present a higher default probability when compared to the total and the other categories below.
- 
-<img src="images/numeric_distributions_by_default.png">
+2. Customers who take higher credit amounts from the bank tend to present higher risk. This makes total sense. The higher the credit amount taken, the harder it is to pay it. 
+3. Customers whose credit services have a long duration present higher risk. The more time a customer spends using a credit service without paying it, the higher the risk of default. 
 
+<img src="images/numeric_distributions_by_default.png" width=800px height=300px>
+
+Examining the weight of evidence and the default probability, it becomes evident that as the duration (in months) increases, the default rate increases. Look how durations of 24-36 months, 36-48 months and 48-60 months present a higher default probability when compared to the total and the other categories below.
+ 
 <img src="images/iv_duration.jpeg">
 
-<img src="images/iv_credit.jpeg">
+Examining the weight of evidence and the default probability, it becomes evident that as the borrowed credit amount increases, the default rate increases. Look how credit amounts of 7500-10000 and higher than 10000 present a higher default probability when compared to the total and the other categories.
+
+<img src="images/iv_credit.jpeg" width=800px height=300px>
 
 4. Credit amount and Duration are strongly positively correlated. Credit services with longer durations generally are associated with higher credit amounts and vice-versa.
 
