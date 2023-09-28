@@ -60,7 +60,7 @@ Examining the weight of evidence and the default probability, it becomes evident
  
 <img src="images/iv_duration.jpeg">
 
-Examining the weight of evidence and the default probability, it becomes evident that as the borrowed credit amount increases, the default rate increases. Look how credit amounts of 7500-10000 and higher than 10000 present a higher default probability when compared to the total and the other categories.
+Examining the weight of evidence and the default probability, it becomes evident that as the borrowed credit amount increases, the default rate increases. Look how credit amounts of 7500-10000 and higher than 10000 present a higher default probability when compared to the total and the other categories below.
 
 <img src="images/iv_credit.jpeg">
 
@@ -116,7 +116,7 @@ Web app credit scoring page:
 
 Web app credit scoring output example:
 
-<img src="images/prediction_output.jpeg">
+<img src="images/prediction_output.jpeg" height="350px" width="200px">
 
 # 9. Run this project on your local machine
 Prerequisites:
