@@ -12,13 +12,15 @@
 # 3. Business problem and project objective
 Context:
 
-Banks generate profit in the credit context by lending money to borrowers and charging interest on the loans. The Return on Equity (ROE) is a key metric that measures the bank's profitability by comparing its net income to the shareholders' equity. Higher ROE indicates more efficient profit generation.
+Banks generate profit in the credit context by lending money to borrowers and charging interest on the loans. The Return on Investment (ROI) is a key metric that measures the bank's profitability by comparing its net income to the investment cost. Higher ROI indicates more efficient profit generation.
 
-ROE = (Net Income / Shareholders' Equity) * 100
+ROI = (Net Income / Investment Cost) * 100
 
 Credit risk refers to the potential of borrowers defaulting on their loan payments, which can lead to financial losses for banks. Banks aim to control credit risk because it safeguards their financial stability and reputation. Managing credit risk involves assessing the likelihood of default and implementing strategies to minimize losses.
 
 Banks use predictive models to estimate the probability of a customer defaulting on a loan. These models analyze various factors like credit history, income, and economic indicators. Credit scores are then assigned to customers, helping banks make informed lending decisions. This approach enhances risk management and improves the overall quality of the loan portfolio.
+
+Beyond the PD (probability of default), there are other metrics that banks aim to model, such as EAD (Exposure at Default), LGD (Loss Given Default), and EL (Expected Loss). EAD represents the customer's outstanding balance at the time of default. LGD represents the expected percentage loss of EAD in case of default. Finally, EL is the product of these three metrics. However, here, I will focus on modeling the PD for credit scoring, which is the most common task in financial corporations.
 
 In summary, the credit cycle involves three primary phases: origination, where loans are granted to borrowers; monitoring, where borrowers' financial health is tracked to prevent defaults; and collection, which involves recouping funds from delinquent borrowers or defaulted loans. The focus here is to prevent default, protecting the bank from these delinquent borrowers.
 
