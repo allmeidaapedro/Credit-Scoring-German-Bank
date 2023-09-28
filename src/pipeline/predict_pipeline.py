@@ -89,25 +89,25 @@ class PredictPipeline:
             default_proba = model.predict_proba(prepared_data)[:, 1]
 
             if default_proba >= 0.0 and default_proba < 0.1:
-                credit_score = "Customer's credit score: 10"
+                credit_score = "Customer's credit score: 1000"
             elif default_proba >= 0.1 and default_proba < 0.2:
-                credit_score = "Customer's credit score: 9"
+                credit_score = "Customer's credit score: 900"
             elif default_proba >= 0.2 and default_proba < 0.3:
-                credit_score = "Customer's credit score: 8"
+                credit_score = "Customer's credit score: 800"
             elif default_proba >= 0.3 and default_proba < 0.4:
-                credit_score = "Customer's credit score: 7"
+                credit_score = "Customer's credit score: 700"
             elif default_proba >= 0.4 and default_proba < 0.5:
-                credit_score = "Customer's credit score: 6"
+                credit_score = "Customer's credit score: 600"
             elif default_proba >= 0.5 and default_proba < 0.6:
-                credit_score = "Customer's credit score: 5"
+                credit_score = "Customer's credit score: 500"
             elif default_proba >= 0.6 and default_proba < 0.7:
-                credit_score = "Customer's credit score: 4"
+                credit_score = "Customer's credit score: 400"
             elif default_proba >= 0.7 and default_proba < 0.8:
-                credit_score = "Customer's credit score: 3"
+                credit_score = "Customer's credit score: 300"
             elif default_proba >= 0.8 and default_proba < 0.9:
-                credit_score = "Customer's credit score: 2"
+                credit_score = "Customer's credit score: 200"
             elif default_proba >= 0.9 and default_proba < 1:
-                credit_score = "Customer's credit score: 1"
+                credit_score = "Customer's credit score: 100"
             
             logging.info('Default probability successfully estimated. Credit score successfully assigned.')
 
