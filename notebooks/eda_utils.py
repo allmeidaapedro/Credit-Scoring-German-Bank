@@ -159,3 +159,101 @@ def check_outliers(data, features):
     
     except Exception as e:
         raise CustomException(e, sys)
+    
+
+def iv_analysis(data, cat, target, positive_label='Positive', cat_label='Categorical'):
+    '''
+    Calculate Information Value (IV) and Weight of Evidence (WOE) analysis for categorical data.
+
+    :param data: DataFrame containing the data.
+    :type data: pandas.DataFrame
+    :param cat: Name of the categorical feature to analyze.
+    :type cat: str
+    :param target: Name of the target binary variable (1/0).
+    :type target: str
+    :param positive_label: Label for the positive category (default is 'Positive').
+    :type positive_label: str, optional
+    :param cat_label: Label for the categorical feature (default is 'Categorical').
+    :type cat_label: str, optional
+
+    :return: DataFrame with IV and WOE analysis results.
+    :rtype: pandas.DataFrame
+
+    This function calculates Information Value (IV) and Weight of Evidence (WOE) statistics for a categorical feature
+    with respect to a binary target variable. It provides insights into the relationship between the categorical
+    feature and the target variable.
+
+    Example:
+    ```python
+    iv_result = iv_analysis(data, 'Category', 'Target')
+    ```
+
+    The resulting DataFrame contains columns for counts, percentages, WOE, IV, and total counts for each category,
+    along with a summary row at the end.
+
+    :raises CustomException: If an exception occurs during the analysis.
+    '''
+    try:
+        # Getting a df with 1 and 0 counts in each category of cat.
+        iv_analysis_df = data.groupby(cat)[target].value_counts().unstack(fill_value=0)
+
+        # Getting the total individuals counts per cat category. Adding a new column with this value.
+        total_counts = iv_analysis_df.sum(axis=1)
+        iv_analysis_df['Total'] = total_counts
+
+        # Getting the total number of 1 and 0. Adding a new column with 1 and 0 percentages per cat category with respect to the total 1 and 0 separately.
+        total_positive = iv_analysis_df[1].sum()
+        total_negative = iv_analysis_df[0].sum()
+        iv_analysis_df['Yes (%)'] = iv_analysis_df[1] / total_positive
+        iv_analysis_df['No (%)'] = iv_analysis_df[0] / total_negative
+
+        # Adding a column with the positive probabilities or positive rates within each cat category.
+        iv_analysis_df[f'{positive_label} Probability (%)'] = round(iv_analysis_df[1] / iv_analysis_df['Total'] * 100, 2)
+
+        # Adding a column containing the information value (iv) and a column containing the weight of evidence (woe).
+        yes_pct = iv_analysis_df['Yes (%)']
+        no_pct = iv_analysis_df['No (%)']
+        woe = np.log(yes_pct / no_pct)
+        iv = (yes_pct - no_pct) * woe
+        iv_analysis_df['WOE'] = round(woe, 2)
+        iv_analysis_df['IV'] = round(iv, 2)
+        iv_analysis_df['WOE'].replace(np.inf, 0, inplace=True)
+        iv_analysis_df['IV'].replace(np.inf, 0, inplace=True)
+        total_iv = iv_analysis_df['IV'].sum()
+
+        # Adding a row with the totals per each column to the dataframe.
+        total_instances = total_positive + total_negative
+        total_row = pd.Series({
+            1: round(total_positive),
+            0: round(total_negative),
+            'Total': round(total_instances),
+            f'{positive_label} Probability (%)': round((total_positive / total_instances) * 100, 2),
+            'IV': round(total_iv, 2)
+        },  name='Total')
+
+        iv_analysis_df = pd.concat([iv_analysis_df, total_row.to_frame().T])
+
+        # Rounding to integer and percentages.
+        iv_analysis_df[0] = iv_analysis_df[0].astype(int)
+        iv_analysis_df[1] = iv_analysis_df[1].astype(int)
+        iv_analysis_df['Total'] = iv_analysis_df['Total'].astype(int)
+        iv_analysis_df['Yes (%)'] = round(100 * iv_analysis_df['Yes (%)'], 2)
+        iv_analysis_df['No (%)'] = round(100 * iv_analysis_df['No (%)'], 2)
+        iv_analysis_df.fillna('-', inplace=True)
+
+        # Reset the index temporarily and add "cat_label" as a new row
+        iv_analysis_df.reset_index(inplace=True)
+        iv_analysis_df.rename(columns={'index': cat_label}, inplace=True)
+        iv_analysis_df.set_index(cat_label, inplace=True)
+
+
+        # Create a MultiIndex for the columns with 'positive_label' as the top-level label
+        iv_analysis_df.columns = pd.MultiIndex.from_tuples([(positive_label, col) for col in iv_analysis_df.columns])
+
+        # Concatenate the 'Default' DataFrame above the existing DataFrame
+        iv_analysis_df = pd.concat([iv_analysis_df])
+
+        return iv_analysis_df
+
+    except Exception as e:
+        raise CustomException(e, sys)
