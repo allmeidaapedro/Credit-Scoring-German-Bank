@@ -211,8 +211,8 @@ def target_probability_distributions(predicted_probas, y_true, positive_label='1
         probas_negative = predicted_probas[y_true == 0]
 
         # Plotting kde plot with shaded curves
-        sns.kdeplot(probas_positive, label=positive_label, color='green', shade=True)
-        sns.kdeplot(probas_negative, label=negative_label, color='red', shade=True)
+        sns.kdeplot(probas_positive, label=positive_label, color='red', shade=True)
+        sns.kdeplot(probas_negative, label=negative_label, color='green', shade=True)
 
         # Customizing the plot.
         plt.title(f'Probability Distribution by {positive_label}')
